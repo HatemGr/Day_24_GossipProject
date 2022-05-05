@@ -13,6 +13,7 @@ PrivateMessage.destroy_all
 Gossip.destroy_all
 Tag.destroy_all
 JoinGossipTag.destroy_all
+JoinMessageRecepient.destroy_all
 
 ### Create 10 cities
 10.times do
@@ -32,7 +33,18 @@ end
   while sen == rec
     sen = User.all.sample
   end
-  PrivateMessage.create(recipient: rec, sender: sen)
+  PrivateMessage.create(sender: sen)
+end
+
+### Join messages to several reveivers
+50.times do
+  message = PrivateMessage.all.sample
+  send_user = message.sender
+  reveive_user = send_user
+  while reveive_user == send_user
+    reveive_user = User.all.sample
+  end
+  JoinMessageRecepient.create(recipient: User.all.sample, private_message: message)
 end
 
 ### Create 20 gossips
@@ -54,3 +66,6 @@ end
 10.times do
   JoinGossipTag.create(gossip: Gossip.all.sample, tag:Tag.all.sample)
 end
+
+
+
